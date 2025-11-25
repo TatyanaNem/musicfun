@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import type { FetchPlaylistsArgs, PlaylistsResponse } from "./playlistsApi.types";
+import type { PlaylistsResponse } from "./playlistsApi.types";
 
 export const playlistsApi = createApi({
     reducerPath: "playlistsApi",
@@ -10,11 +10,10 @@ export const playlistsApi = createApi({
         }
     }),
     endpoints: (builder) => ({
-        getPlaylists: builder.query<PlaylistsResponse, FetchPlaylistsArgs>({
-            query: () => ({
-                method: "GET",
-                url: "/playlists",
-            }),
+        getPlaylists: builder.query<PlaylistsResponse, void>({
+            query: () => '/playlists',
         }),
     })
 });
+
+export const { useGetPlaylistsQuery } = playlistsApi
