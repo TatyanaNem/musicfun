@@ -1,27 +1,12 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import type {
   CreatePlaylistArgs,
   PlaylistData,
   PlaylistsResponse,
   UpdatePlaylistArgs,
 } from "./playlistsApi.types";
+import { baseApi } from "@/app/api/baseApi";
 
-export const playlistsApi = createApi({
-  reducerPath: "playlistsApi",
-  baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_BASE_URL,
-    headers: {
-      "API-KEY": import.meta.env.VITE_API_KEY,
-    },
-    prepareHeaders: (headers) => {
-      headers.set(
-        "Authorization",
-        `Bearer ${import.meta.env.VITE_ACCESS_TOKEN}`
-      );
-      return headers;
-    },
-  }),
-  tagTypes: ["Playlists"],
+export const playlistsApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getPlaylists: builder.query<PlaylistsResponse, void>({
       query: () => "/playlists",
