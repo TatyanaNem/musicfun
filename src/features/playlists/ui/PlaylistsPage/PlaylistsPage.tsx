@@ -13,14 +13,21 @@ import { useForm } from "react-hook-form";
 import { PlaylistItem } from "./PlaylistItem/PlaylistItem";
 import { UpdatePlaylistForm } from "./UpdatePlaylistForm/UpdatePlaylistForm";
 import { useDebouncedValue } from "@/common/hooks/useDebouncedValue";
+import { Pagination } from "@/common/components";
 
 export const PlaylistsPage = () => {
   const [playlistId, setPlaylistId] = useState<string | null>(null);
   const [search, setSearch] = useState<string>("");
+  const [currentPage, setCurrentPage] = useState(1);
+
   const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>();
   const debouncedValue = useDebouncedValue(search);
 
-  const { data, isLoading } = useGetPlaylistsQuery({ search: debouncedValue });
+  const { data, isLoading } = useGetPlaylistsQuery({
+    search: debouncedValue,
+    pageNumber: currentPage,
+    pageSize: 8,
+  });
   const [deletePlaylist] = useDeletePlaylistMutation();
 
   const deletePlaylistHandler = (playlistId: string) => {
@@ -78,6 +85,11 @@ export const PlaylistsPage = () => {
           );
         })}
       </div>
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        pagesCount={data?.meta.pagesCount || 1}
+      />
     </div>
   );
 };
