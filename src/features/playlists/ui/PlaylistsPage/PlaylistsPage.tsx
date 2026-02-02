@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import {
   useDeletePlaylistMutation,
   useGetPlaylistsQuery,
@@ -55,6 +55,11 @@ export const PlaylistsPage = () => {
     setCurrentPage(1);
   };
 
+  const searchPlaylistHandler = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.currentTarget.value);
+    setCurrentPage(1);
+  };
+
   return (
     <div className={s.container}>
       <h1>Playlists page</h1>
@@ -62,7 +67,7 @@ export const PlaylistsPage = () => {
       <input
         type="search"
         placeholder={"Search playlist by title"}
-        onChange={(e) => setSearch(e.currentTarget.value)}
+        onChange={(e) => searchPlaylistHandler(e)}
       />
 
       <div className={s.items}>
