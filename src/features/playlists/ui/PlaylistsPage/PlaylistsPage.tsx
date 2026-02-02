@@ -19,6 +19,7 @@ export const PlaylistsPage = () => {
   const [playlistId, setPlaylistId] = useState<string | null>(null);
   const [search, setSearch] = useState<string>("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(2);
 
   const { register, handleSubmit, reset } = useForm<UpdatePlaylistArgs>();
   const debouncedValue = useDebouncedValue(search);
@@ -26,7 +27,7 @@ export const PlaylistsPage = () => {
   const { data, isLoading } = useGetPlaylistsQuery({
     search: debouncedValue,
     pageNumber: currentPage,
-    pageSize: 8,
+    pageSize,
   });
   const [deletePlaylist] = useDeletePlaylistMutation();
 
@@ -47,6 +48,11 @@ export const PlaylistsPage = () => {
     } else {
       setPlaylistId(null);
     }
+  };
+
+  const changePageSizeHandler = (pageSize: number) => {
+    setPageSize(pageSize);
+    setCurrentPage(1);
   };
 
   return (
@@ -89,6 +95,8 @@ export const PlaylistsPage = () => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         pagesCount={data?.meta.pagesCount || 1}
+        pageSize={pageSize}
+        changePageSize={changePageSizeHandler}
       />
     </div>
   );
