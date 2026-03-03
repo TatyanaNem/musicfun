@@ -18,10 +18,15 @@ export const playlistsApi = baseApi.injectEndpoints({
       { data: PlaylistData },
       CreatePlaylistArgs
     >({
-      query: (body) => ({
+      query: ({ title, description }) => ({
         method: "POST",
         url: "/playlists",
-        body,
+        body: {
+          data: {
+            type: "playlists",
+            attributes: { title, description },
+          },
+        },
       }),
       invalidatesTags: ["Playlists"],
     }),
@@ -39,7 +44,12 @@ export const playlistsApi = baseApi.injectEndpoints({
       query: ({ playlistId, body }) => ({
         method: "PUT",
         url: `/playlists/${playlistId}`,
-        body,
+        body: {
+          data: {
+            type: "playlists",
+            attributes: body,
+          },
+        },
       }),
       invalidatesTags: ["Playlists"],
     }),
